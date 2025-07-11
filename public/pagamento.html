@@ -1,0 +1,115 @@
+<!-- pagamento.html corrigido -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento Confirmado - Empório Doce Café</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fef8f4;
+      color: #4e342e;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #6f4e37;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin: 1rem 0;
+    }
+
+    .voltar {
+      margin-top: 2rem;
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #6f4e37;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .voltar:hover {
+      background-color: #8b5e3c;
+    }
+
+    .dados {
+      margin-top: 1.5rem;
+      text-align: left;
+    }
+
+    .dados strong {
+      color: #6f4e37;
+    }
+  </style>
+</head>
+<body>
+
+<h1>☕ Pagamento Confirmado!</h1>
+
+<div class="card">
+  <p>Obrigado por comprar no <strong>Empório Doce Café</strong>!</p>
+  <p>Seu pedido está sendo preparado com muito carinho e será entregue em breve.</p>
+
+  <div class="dados">
+    <h3>📦 Resumo dos Dados</h3>
+    <p><strong>Nome:</strong> <span id="nome">—</span></p>
+    <p><strong>E-mail:</strong> <span id="email">—</span></p>
+    <p><strong>Endereço:</strong> <span id="endereco">—</span></p>
+    <p><strong>Método de pagamento:</strong> <span id="metodo">—</span></p>
+
+    <div id="pixSection" style="display: none; margin-top: 1.5rem; text-align: center;">
+      <p>Escaneie o QR Code para pagar via Pix:</p>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=sua-chave-pix-aqui&size=180x180" alt="QR Code Pix">
+    </div>
+  </div>
+
+  <a href="index.html" class="voltar">Voltar para a loja</a>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dadosCliente = JSON.parse(localStorage.getItem('dadosCliente')) || {};
+
+    document.getElementById("nome").textContent = dadosCliente.nome || "—";
+    document.getElementById("email").textContent = dadosCliente.email || "—";
+
+    const enderecoObj = dadosCliente.endereco || {};
+    const enderecoFormatado = [
+      enderecoObj.rua,
+      enderecoObj.numero ? "nº " + enderecoObj.numero : null,
+      enderecoObj.complemento,
+      enderecoObj.cidade
+    ].filter(Boolean).join(", ");
+    document.getElementById("endereco").textContent = enderecoFormatado || "—";
+
+    const metodo = dadosCliente.metodo || "—";
+    document.getElementById("metodo").textContent = metodo === "pix" ? "Pix" : "Cartão";
+
+    if (metodo === "pix") {
+      document.getElementById("pixSection").style.display = "block";
+    }
+  });
+</script>
+
+</body>
+</html>
